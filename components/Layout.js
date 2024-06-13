@@ -9,6 +9,11 @@ const Layout = ({ children, className, pageProps, ...rest }) => {
       {...rest}
     >
       <Head>
+        <title>Jeff Hampton</title>
+        <meta
+          name="description"
+          content="My photo portfolio. Hope you like dogs."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header pageProps={pageProps} />
