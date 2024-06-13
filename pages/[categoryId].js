@@ -1,14 +1,12 @@
 import { useState } from "react";
+import cloudinary from "@/utils/cloudinary";
+import { categories } from "@/lib/data";
+import { mapImages } from "@/lib/mapImages";
 import PhotoGallery from "@/components/Gallery";
 import Lightbox from "yet-another-react-lightbox";
-import { Inter } from "next/font/google";
-import cloudinary from "@/utils/cloudinary";
-import { mapImages } from "@/lib/mapImages";
 import "yet-another-react-lightbox/styles.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Page({ images, folders }) {
+const Category = ({ images }) => {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(null);
 
@@ -16,7 +14,6 @@ export default function Page({ images, folders }) {
     setIndex(photoIndex);
     setOpen(true);
   };
-
   return (
     <>
       <Lightbox
@@ -33,20 +30,35 @@ export default function Page({ images, folders }) {
       />
     </>
   );
-}
+};
 
-export async function getStaticProps() {
+export default Category;
+
+export async function getStaticPaths() {
+  const paths = categories.map((category) => {
+    const categoryId = category.name.toLowerCase().replace(/ /g, "-");
+    return {
+      params: {
+        categoryId,
+      },
+    };
+  });
+  return {
+    paths,
+    fallback: false,
+  };
+}
+export async function getStaticProps({ params }) {
+  const categoryId = params.categoryId.replace(/\-/g, "+");
   const results = await cloudinary.search
-    .expression("tags=featured")
+    .expression(`folder=${categoryId}`)
     .with_field("context")
     .execute();
   const { resources } = results;
   const images = mapImages(resources);
-  const { folders } = await cloudinary.api.root_folders();
   return {
     props: {
       images,
-      folders,
     },
   };
 }

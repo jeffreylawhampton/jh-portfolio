@@ -1,3 +1,4 @@
+@import url("https://use.typekit.net/nfx8fty.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,17 +18,75 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  overflow-x: hidden;
+  overflow-y: overlay;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+.link.active::before {
+  content: " ";
+  position: absolute;
+  width: 110%;
+  margin-left: -5%;
+  height: 0.7em;
+  background-color: #e79f0d;
+  filter: opacity(75%);
+  z-index: -1;
+  bottom: 0.1em;
+  transition: height 1s ease;
+  border-radius: 2px;
+}
+
+.link:hover::before {
+  content: " ";
+  position: absolute;
+  width: 110%;
+  margin-left: -5%;
+  height: 0.7em;
+  background-color: #e79f0d;
+  filter: opacity(90%);
+  z-index: -1;
+  bottom: 0.1em;
+  transition: height 1s ease;
+  border-radius: 2px;
+}
+
+.react-photo-album--photo {
+  filter: opacity(100%);
+  transition: 600ms ease-out;
+}
+
+.react-photo-album--photo:hover {
+  filter: opacity(60%);
+  transition: 300ms ease-in;
+}
+
+.footer-link {
+  transition: all 500ms ease;
+  border-radius: 3px;
+
+  color: black;
+}
+
+.footer-link svg {
+  height: 24px;
+  vertical-align: middle;
+  padding: 3px;
+}
+
+.footer-link:hover {
+  transition: all 500ms ease;
+  background-color: #e79f0d;
+}
+
+@media (max-width: 768px) {
+  .footer-link svg {
+    height: 18px;
+    padding: 2px;
   }
 }
