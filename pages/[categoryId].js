@@ -1,6 +1,7 @@
 import { useState } from "react";
 import cloudinary from "@/utils/cloudinary";
 import { categories } from "@/lib/data";
+import { getBase } from "@/lib/getBase64";
 import { mapImages } from "@/lib/mapImages";
 import PhotoGallery from "@/components/Gallery";
 import Lightbox from "yet-another-react-lightbox";
@@ -56,6 +57,14 @@ export async function getStaticProps({ params }) {
     .execute();
   const { resources } = results;
   const images = mapImages(resources);
+  const base64s = await Promise.all(
+    images.map(async (image) => await getBase(image))
+  );
+
+  for (let i = 0; i < images.length; i++) {
+    images[i].blurDataURL = base64s[i];
+  }
+
   return {
     props: {
       images,

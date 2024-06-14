@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 
 const NextJsImage = ({
   photo,
@@ -7,12 +7,15 @@ const NextJsImage = ({
 }) => {
   return (
     <div style={{ ...wrapperStyle, position: "relative" }}>
-      <Image
-        fill
+      <CldImage
         priority={photo.priority}
-        src={photo}
-        sizes="(max-width: 845px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        placeholder={"blurDataURL" in photo ? "blur" : undefined}
+        height={photo.height}
+        loading={photo.priority ? "eager" : "lazy"}
+        width={photo.width}
+        src={photo.publicId}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        placeholder={photo.blurDataURL ? "blur" : "empty"}
+        blurDataURL={photo.blurDataURL}
         {...{ alt, title, className, onClick }}
       />
     </div>
