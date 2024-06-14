@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "cloudinary": "^2.2.0",
     "next": "14.2.4",
+    "next-cloudinary": "^6.6.2",
     "react": "^18",
     "react-dom": "^18",
     "react-photo-album": "^2.4.0",

@@ -1,14 +1,12 @@
 import { useState } from "react";
 import PhotoGallery from "@/components/Gallery";
 import Lightbox from "yet-another-react-lightbox";
-import { Inter } from "next/font/google";
 import cloudinary from "@/utils/cloudinary";
 import { mapImages } from "@/lib/mapImages";
 import "yet-another-react-lightbox/styles.css";
+import { getBase } from "@/lib/getBase64";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Page({ images, folders }) {
+export default function Page({ images }) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(null);
 
@@ -40,13 +38,20 @@ export async function getStaticProps() {
     .expression("tags=featured")
     .with_field("context")
     .execute();
+
   const { resources } = results;
   const images = mapImages(resources);
-  const { folders } = await cloudinary.api.root_folders();
+  const base64s = await Promise.all(
+    images.map(async (image) => await getBase(image))
+  );
+
+  for (let i = 0; i < images.length; i++) {
+    images[i].blurDataURL = base64s[i];
+  }
+
   return {
     props: {
       images,
-      folders,
     },
   };
 }
